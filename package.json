@@ -1,0 +1,22 @@
+{
+  "name": "voxel-csg",
+  "version": "0.0.0",
+  "description": "csg for voxel models",
+  "preferGlobal": "false",
+  "main": "index.js",
+  "keywords": [
+    "csg",
+    "constructive solid geometry",
+    "voxel"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cryptoquick/voxel-csg.git"
+  },
+  "dependencies": {
+    
+  },
+  "engines": {
+    "node": "*"
+  }
+}
