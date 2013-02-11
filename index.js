@@ -42,21 +42,31 @@ module.exports.union = function (sets, type) {
 	return result;
 }
 
+module.exports.intersection = function (sets, type) {
+	var result = {},
+		hashed = [];
+
+	if (type == 'lodash') {
+
+	}
+	else {
+
+	}	
+}
+
 // subsequent sets 'subtract' from first one.
 module.exports.difference = function (sets, type) {
 	var result = {},
 		hashed = [];
 
 	if (type == 'lodash') {
-		for (var s = 0, ss = sets.length; s < ss; s++) {
-			hashed.push(_.map(sets[s], function (el) { return hash(el); }));
-		}
-
-		// console.log('HARBL!!!', hashed);
+		_.each(sets, function (set) {
+			hashed.push(_.map(set, function (el) { return hash(el); }));
+		});
 
 		result = _.difference.apply(null, hashed);
 	}
-	else { // 'looped'
+	else { // 'obj'
 		for (var f = 0, ff = sets[0].length; f < ff; f++) {
 			var fel = sets[0][f],
 				felh = hash(fel);
@@ -77,7 +87,8 @@ module.exports.difference = function (sets, type) {
 			}
 		}
 	}
-	
+
 	return result;
 }
+
 

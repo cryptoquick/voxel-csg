@@ -60,4 +60,8 @@ testAll('union', ['lodash', 'obj']);
 
 // DIFFERENCES
 
+testAll('intersection', ['lodash', 'obj']);
+
+// DIFFERENCES
+
 testAll('difference', ['lodash', 'obj']);
