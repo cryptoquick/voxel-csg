@@ -1,9 +1,7 @@
 var _ = require('lodash');
 
-var opts = {};
-
 var hash = function (ex) {
-	var size = opts.size || 32;
+	var size = 32; // chunksize hardcoded, for now
 	return ex[0] * size * size + ex[1] * size + ex[2]; // hash index = x, y, z
 }
 
@@ -26,9 +24,9 @@ module.exports.union = function (sets, type) {
 			hashsets.push(hashset);
 		});
 
-		return _.union.apply(null, hashsets);
+		result = _.union.apply(null, hashsets);
 	}
-	else {
+	else { // 'obj'
 		for (var s = 0, ss = sets.length; s < ss; s++) {
 			var set = sets[s];
 
@@ -39,21 +37,28 @@ module.exports.union = function (sets, type) {
 				result[elh] = el;
 			}
 		}
-
-		return result;
 	}
+
+	return result;
 }
 
 // subsequent sets 'subtract' from first one.
 module.exports.difference = function (sets, type) {
-	var result = {};
+	var result = {},
+		hashed = [];
 
 	if (type == 'lodash') {
+		for (var s = 0, ss = sets.length; s < ss; s++) {
+			hashed.push(_.map(sets[s], function (el) { return hash(el); }));
+		}
 
+		// console.log('HARBL!!!', hashed);
+
+		result = _.difference.apply(null, hashed);
 	}
-	else {
+	else { // 'looped'
 		for (var f = 0, ff = sets[0].length; f < ff; f++) {
-			var fel = sets[0],
+			var fel = sets[0][f],
 				felh = hash(fel);
 
 			result[felh] = fel;
@@ -71,8 +76,8 @@ module.exports.difference = function (sets, type) {
 				}
 			}
 		}
-
-		return result;
 	}
+	
+	return result;
 }
 

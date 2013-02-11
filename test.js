@@ -29,34 +29,35 @@ function runTest (sets, operation, type) {
 
 	console.log('operation:', operation, 'type:', type, 'sets length:', setlengths.join(','), 'result length:', resultlength);
 	console.log('operations took a total of', date2 - date1, 'ms to complete, each taking', (date2 - date1) / testRuns, 'ms to complete.');
+
+	if (testRuns == 1)
+		console.log('actual result:', result);
 }
 
-function testAll (operation) {
-	console.log(operation.toUpperCase() + ' BETWEEN TWO MODELS');
+function testAll (operation, types) {
+	var typeLen = types.length;
 
-	runTest([models[1], models[2]], operation, 'obj');
-	runTest([models[1], models[2]], operation, 'lodash');
-
-	console.log(operation.toUpperCase() + ' BETWEEN FIVE MODELS');
-
-	runTest([models[1], models[2], models[3], models[4], models[5]], operation, 'obj');
-	runTest([models[1], models[2], models[3], models[4], models[5]], operation, 'lodash');
+	function testTypes (models) {
+		for (var t = 0; t < typeLen; t++) {
+			runTest(models, operation, types[t]);
+		}
+	}
 
 	console.log(operation.toUpperCase() + ' BETWEEN TWO MODELS');
 
-	runTest([models[1], models[2]], operation, 'obj');
-	runTest([models[1], models[2]], operation, 'lodash');
+	testTypes([models[1], models[2]]);
 
 	console.log(operation.toUpperCase() + ' BETWEEN FIVE MODELS');
 
-	runTest([models[1], models[2], models[3], models[4], models[5]], operation, 'obj');
-	runTest([models[1], models[2], models[3], models[4], models[5]], operation, 'lodash');
+	testTypes([models[1], models[2], models[3], models[4], models[5]]);
+
+	console.log('----------------------------');
 }
 
 // UNIONS
 
-testAll('union');
+testAll('union', ['lodash', 'obj']);
 
 // DIFFERENCES
 
-testAll('difference');
+testAll('difference', ['lodash', 'obj']);
