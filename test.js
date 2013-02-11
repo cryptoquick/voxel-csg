@@ -7,46 +7,40 @@ var modelA = 1;
 var modelB = 2;
 var testRuns = 1000;
 
-var date1 = Date.now();
-for (var i = 0; i < testRuns; i++) {
-	var unionResult = csg.union([models[modelA], models[modelB]]);
+function runTest (sets, operation, type) {
+	var date1 = Date.now();
+	for (var i = 0; i < testRuns; i++) {
+		var result = csg[operation](sets, type);
+	}
+	var date2 = Date.now();
+
+	var setlengths = [];
+
+	for (var s = 0, ss = sets.length; s < ss; s++) {
+		setlengths.push(sets[s].length);
+	}
+
+	if (Array.isArray(result))
+		var resultlength = result.length;
+	else
+		var resultlength = Object.keys(result).length;
+
+	console.log('operation:', operation, 'type:', type, 'sets length:', setlengths.join(','), 'result length:', resultlength);
+	console.log('operations took a total of', date2 - date1, 'ms to complete, each taking', (date2 - date1) / testRuns, 'ms to complete.');
 }
-var date2 = Date.now();
 
-console.log('obj: a length:', models[modelA].length, 'b length:', models[modelB].length,
-	'union length:', Object.keys(unionResult).length, 'a length + b length', models[modelA].length + models[modelB].length);
-console.log('union took', date2 - date1, 'ms to complete, each taking', (date2 - date1) / testRuns, 'ms to complete');
+// UNIONS
 
-var date1 = Date.now();
-for (var i = 0; i < testRuns; i++) {
-	var unionResult = csg.union([models[modelA], models[modelB]], { type: 'lodash' });
-}
-var date2 = Date.now();
+console.log('UNIONS BETWEEN TWO MODELS');
 
-console.log('lodash: a length:', models[modelA].length, 'b length:', models[modelB].length,
-	'union length:', Object.keys(unionResult).length, 'a length + b length', models[modelA].length + models[modelB].length);
-console.log('union took', date2 - date1, 'ms to complete, each taking', (date2 - date1) / testRuns, 'ms to complete');
+runTest([models[1], models[2]], 'union', 'obj');
+runTest([models[1], models[2]], 'union', 'lodash');
 
-var date1 = Date.now();
-for (var i = 0; i < testRuns; i++) {
-	var unionResult = csg.union([models[1], models[2], models[3], models[4], models[5]]);
-}
-var date2 = Date.now();
+console.log('UNIONS BETWEEN FIVE MODELS');
 
-console.log('obj', unionResult);
+runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'obj');
+runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'lodash');
 
-console.log('obj: a length:', models[modelA].length, 'b length:', models[modelB].length,
-	'union length:', Object.keys(unionResult).length, 'a length + b length', models[modelA].length + models[modelB].length);
-console.log('union took', date2 - date1, 'ms to complete, each taking', (date2 - date1) / testRuns, 'ms to complete');
+// DIFFERENCES
 
-var date1 = Date.now();
-for (var i = 0; i < testRuns; i++) {
-	var unionResult = csg.union([models[1], models[2], models[3], models[4], models[5]], { type: 'lodash' });
-}
-var date2 = Date.now();
 
-console.log('lodash', unionResult);
-
-console.log('lodash: a length:', models[modelA].length, 'b length:', models[modelB].length,
-	'union length:', Object.keys(unionResult).length, 'a length + b length', models[modelA].length + models[modelB].length);
-console.log('union took', date2 - date1, 'ms to complete, each taking', (date2 - date1) / testRuns, 'ms to complete');
