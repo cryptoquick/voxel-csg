@@ -2,21 +2,15 @@
 module.exports = function (opts) {
 	var opts = opts || {};
 	opts.type = opts.type || 'full';
-	opts.vals = opts.vals || 'same';
-
-	var ro = {}; // result object
 
 	var hash = function (ex) {
 		var size = opts.size || 32;
 		return ex[0] * size * size + ex[1] * size + ex[2]; // hash index = x, y, z
 	}
 
-	// var sameUnion = function () {
+	var ro = {}; // result object
 
-	// }
-
-	var fullUnion = function (a, b) {
-		// var ufunc = 
+	var fullUnion = function (a, b) {	// b overwrites a
 		var result = [];
 
 		if (!a || !b) {
@@ -25,27 +19,16 @@ module.exports = function (opts) {
 
 		for (var aa = 0, aaa = a.length; aa < aaa; aa++) {
 			var ah = hash(a[aa]);
-			if (ro[ah]) {
-				ro[ah].push(a[aa]);
-			}
-			else {
-				ro[ah] = [a[aa]];
-			}
+			ro[ah] = a[aa];
 		}
 
 		for (var bb = 0, bbb = b.length; bb < bbb; bb++) {
 			var bh = hash(b[bb]);
-			if (ro[bh])
-				ro[bh].push(b[bb]);
-			else
-				ro[bh] = [b[bb]];
+			ro[bh] = b[bb];
 		}
 
 		return ro;
 	}
-
-	var full
-
 
 	/*	// turn voxel models into hash tables using hashed position indices
 		var ao = {}, bo = {};
