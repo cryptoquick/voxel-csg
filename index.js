@@ -52,8 +52,8 @@ module.exports.difference = function (sets, type) {
 
 	}
 	else {
-		for (var f = 0, ff = set[0]; f < ff; f++) {
-			var fel = set[0],
+		for (var f = 0, ff = sets[0].length; f < ff; f++) {
+			var fel = sets[0],
 				felh = hash(fel);
 
 			result[felh] = fel;
@@ -67,7 +67,7 @@ module.exports.difference = function (sets, type) {
 					elh = hash(el);
 
 				if (result[elh]) {
-					remove result[elh];
+					delete result[elh];
 				}
 			}
 		}

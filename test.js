@@ -22,34 +22,41 @@ function runTest (sets, operation, type) {
 
 	if (Array.isArray(result))
 		var resultlength = result.length;
-	else
+	else if (typeof result == 'object')
 		var resultlength = Object.keys(result).length;
+	else
+		console.error('unexpected result', result);
 
 	console.log('operation:', operation, 'type:', type, 'sets length:', setlengths.join(','), 'result length:', resultlength);
 	console.log('operations took a total of', date2 - date1, 'ms to complete, each taking', (date2 - date1) / testRuns, 'ms to complete.');
 }
 
+function testAll (operation) {
+	console.log(operation.toUpperCase() + ' BETWEEN TWO MODELS');
+
+	runTest([models[1], models[2]], operation, 'obj');
+	runTest([models[1], models[2]], operation, 'lodash');
+
+	console.log(operation.toUpperCase() + ' BETWEEN FIVE MODELS');
+
+	runTest([models[1], models[2], models[3], models[4], models[5]], operation, 'obj');
+	runTest([models[1], models[2], models[3], models[4], models[5]], operation, 'lodash');
+
+	console.log(operation.toUpperCase() + ' BETWEEN TWO MODELS');
+
+	runTest([models[1], models[2]], operation, 'obj');
+	runTest([models[1], models[2]], operation, 'lodash');
+
+	console.log(operation.toUpperCase() + ' BETWEEN FIVE MODELS');
+
+	runTest([models[1], models[2], models[3], models[4], models[5]], operation, 'obj');
+	runTest([models[1], models[2], models[3], models[4], models[5]], operation, 'lodash');
+}
+
 // UNIONS
 
-console.log('UNIONS BETWEEN TWO MODELS');
-
-runTest([models[1], models[2]], 'union', 'obj');
-runTest([models[1], models[2]], 'union', 'lodash');
-
-console.log('UNIONS BETWEEN FIVE MODELS');
-
-runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'obj');
-runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'lodash');
-
-console.log('UNIONS BETWEEN TWO MODELS');
-
-runTest([models[1], models[2]], 'union', 'obj');
-runTest([models[1], models[2]], 'union', 'lodash');
-
-console.log('UNIONS BETWEEN FIVE MODELS');
-
-runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'obj');
-runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'lodash');
+testAll('union');
 
 // DIFFERENCES
 
+testAll('difference');
