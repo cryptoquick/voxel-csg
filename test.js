@@ -41,6 +41,15 @@ console.log('UNIONS BETWEEN FIVE MODELS');
 runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'obj');
 runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'lodash');
 
-// DIFFERENCES
+console.log('UNIONS BETWEEN TWO MODELS');
 
+runTest([models[1], models[2]], 'union', 'obj');
+runTest([models[1], models[2]], 'union', 'lodash');
+
+console.log('UNIONS BETWEEN FIVE MODELS');
+
+runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'obj');
+runTest([models[1], models[2], models[3], models[4], models[5]], 'union', 'lodash');
+
+// DIFFERENCES
 
