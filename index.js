@@ -1,34 +1,39 @@
+var _ = require('lodash');
 
-module.exports = function (opts) {
-	var opts = opts || {};
-	opts.type = opts.type || 'full';
+var opts = {};
 
-	var hash = function (ex) {
-		var size = opts.size || 32;
-		return ex[0] * size * size + ex[1] * size + ex[2]; // hash index = x, y, z
-	}
+var hash = function (ex) {
+	var size = opts.size || 32;
+	return ex[0] * size * size + ex[1] * size + ex[2]; // hash index = x, y, z
+}
 
-	var ro = {}; // result object
+module.exports.union = function (sets, opts) { // b overwrites a
+	opts = opts;
 
-	var fullUnion = function (a, b) {	// b overwrites a
+	// Build a set of hash indices
+	var hashsets = [],
+		hashobj = {};
+
+	_.each(sets, function (set) {
+		var hashset = [];
+		_.each(set, function (el) {
+			var hashindex = hash(el);
+			hashset.push(hashindex);
+			hashobj[hashindex] = el;
+		});
+		hashsets.push(hashset);
+	});
+
+	return _.union(hashsets);
+}
+/*
+	var fullDifference = function (a, b) {
 		var result = [];
 
-		if (!a || !b) {
-			console.error('missing either a or b', 'a length:', a, 'b length:', b);
-		}
+		if (!a || !b) console.error('missing either a or b', 'a length:', a, 'b length:', b);
 
-		for (var aa = 0, aaa = a.length; aa < aaa; aa++) {
-			var ah = hash(a[aa]);
-			ro[ah] = a[aa];
-		}
-
-		for (var bb = 0, bbb = b.length; bb < bbb; bb++) {
-			var bh = hash(b[bb]);
-			ro[bh] = b[bb];
-		}
-
-		return ro;
-	}
+		// for (var aa = 0, aaa = a.length)
+	}*/
 
 	/*	// turn voxel models into hash tables using hashed position indices
 		var ao = {}, bo = {};
@@ -70,17 +75,4 @@ module.exports = function (opts) {
 
 		return result;
 	}*/
-
-	switch (opts.type) {
-		case 'full':
-			this.union = fullUnion;
-			// this.difference = fullDifference;
-			// this.intersection = fullIntersection;
-			break;
-		case 'smart':
-			// this.union = smartUnion;
-			// this.difference = smartDifference;
-			// this.intersection = smartIntersection;
-			break;
-	}
-}
+// }

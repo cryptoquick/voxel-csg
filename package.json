@@ -14,7 +14,7 @@
     "url": "https://github.com/cryptoquick/voxel-csg.git"
   },
   "dependencies": {
-    
+    "lodash": "1.0.0-rc.3"
   },
   "engines": {
     "node": "*"
