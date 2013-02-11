@@ -9,22 +9,21 @@ var hash = function (ex) {
 
 module.exports.union = function (sets, opts) { // b overwrites a
 	opts = opts;
+	var result = [],
+		ro = {}; // result object
 
-	// Build a set of hash indices
-	var hashsets = [],
-		hashobj = {};
+	for (var s = 0, ss = sets.length; s < ss; s++) {
+		var set = sets[s];
 
-	_.each(sets, function (set) {
-		var hashset = [];
-		_.each(set, function (el) {
-			var hashindex = hash(el);
-			hashset.push(hashindex);
-			hashobj[hashindex] = el;
-		});
-		hashsets.push(hashset);
-	});
+		for (var e = 0, ee = set.length; e < ee; e++) {
+			var el = set[e],
+				elh = hash(el);
 
-	return _.union(hashsets);
+			ro[elh] = el;
+		}
+	}
+
+	return ro;
 }
 /*
 	var fullDifference = function (a, b) {

@@ -4942,22 +4942,21 @@ var hash = function (ex) {
 
 module.exports.union = function (sets, opts) { // b overwrites a
 	opts = opts;
+	var result = [],
+		ro = {}; // result object
 
-	// Build a set of hash indices
-	var hashsets = [],
-		hashobj = {};
+	for (var s = 0, ss = sets.length; s < ss; s++) {
+		var set = sets[s];
 
-	_.each(sets, function (set) {
-		var hashset = [];
-		_.each(set, function (el) {
-			var hashindex = hash(el);
-			hashset.push(hashindex);
-			hashobj[hashindex] = el;
-		});
-		hashsets.push(hashset);
-	});
+		for (var e = 0, ee = set.length; e < ee; e++) {
+			var el = set[e],
+				elh = hash(el);
 
-	return _.union(hashsets);
+			ro[elh] = el;
+		}
+	}
+
+	return ro;
 }
 /*
 	var fullDifference = function (a, b) {
@@ -5019,17 +5018,21 @@ var models = data.models();
 
 var modelA = 1;
 var modelB = 2;
+var testRuns = 1000;
 
-var date1 = new Date();
-var unionResult = csg.union([models[modelA], models[modelB]]);
+var date1 = Date.now();
+
+for (var i = 0; i < testRuns; i++) {
+	var unionResult = csg.union([models[modelA], models[modelB]]);
+}
 
 console.log(unionResult);
 
-var date2 = new Date();
+var date2 = Date.now();
 
 console.log('a length:', models[modelA].length, 'b length:', models[modelB].length,
-	'union length:', unionResult.length, 'a length + b length', models[modelA].length + models[modelB].length);
-console.log('union took', date2 - date1, 'ms to complete.');
+	'union length:', Object.keys(unionResult).length, 'a length + b length', models[modelA].length + models[modelB].length);
+console.log('union took', date2 - date1, 'ms to complete, each taking', (date2 - date1) / testRuns, 'ms to complete');
 
 });
 require("/test.js");
